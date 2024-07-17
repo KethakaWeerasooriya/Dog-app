@@ -15,25 +15,52 @@ class FavoritesScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Favorite Breeds'),
+        backgroundColor: Colors.teal,
       ),
       body: favoriteBreeds.isEmpty
-          ? const Center(child: Text('No favorite breeds yet!'))
+          ? const Center(
+              child: Text(
+                'No favorite breeds yet!',
+                style: TextStyle(fontSize: 18, color: Colors.grey),
+              ),
+            )
           : ListView.builder(
               itemCount: favoriteBreeds.length,
               itemBuilder: (context, index) {
                 final breed = favoriteBreeds[index];
-                return ListTile(
-                  title: Text(breed.name),
-                  subtitle: Text(breed.subtitle),
-                  leading: Text(breed.icon),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailScreen(dogBreed: breed),
+                return Card(
+                  elevation: 4.0,
+                  margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      child: Text(breed.icon),
+                      backgroundColor: Colors.teal,
+                      foregroundColor: Colors.white,
+                    ),
+                    title: Text(
+                      breed.name,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(breed.subtitle),
+                    trailing: IconButton(
+                      icon: Icon(
+                        favoritesProvider.isFavorite(breed) ? Icons.favorite : Icons.favorite_border,
+                        color: favoritesProvider.isFavorite(breed) ? Colors.red : null,
                       ),
-                    );
-                  },
+                      onPressed: () {
+                        favoritesProvider.toggleFavorite(breed);
+                      },
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailScreen(dogBreed: breed),
+                        ),
+                      );
+                    },
+                  ),
                 );
               },
             ),
