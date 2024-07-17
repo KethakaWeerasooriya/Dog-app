@@ -8,6 +8,8 @@ import '../Services/local_storage_service.dart';
 import 'detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -68,38 +70,63 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dog Breeds'),
+        title: const Text('Dog Breeds'),
+        backgroundColor: Colors.teal,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: fetchDogBreedsFromAPI,
+          ),
+        ],
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: dogBreeds.length,
-              itemBuilder: (context, index) {
-                final breed = dogBreeds[index];
-                return ListTile(
-                  leading: Text(breed.icon),
-                  title: Text(breed.name),
-                  subtitle: Text(breed.subtitle),
-                  trailing: IconButton(
-                    icon: Icon(
-                      Provider.of<FavoritesProvider>(context).isFavorite(breed)
-                          ? Icons.favorite
-                          : Icons.favorite_border,
-                    ),
-                    onPressed: () {
-                      Provider.of<FavoritesProvider>(context, listen: false).toggleFavorite(breed);
-                    },
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailScreen(dogBreed: breed),
+          ? const Center(child: CircularProgressIndicator())
+          : RefreshIndicator(
+              onRefresh: fetchDogBreedsFromAPI,
+              child: ListView.builder(
+                itemCount: dogBreeds.length,
+                itemBuilder: (context, index) {
+                  final breed = dogBreeds[index];
+                  return Card(
+                    elevation: 4.0,
+                    margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        child: Text(breed.icon),
+                        backgroundColor: Colors.teal,
+                        foregroundColor: Colors.white,
                       ),
-                    );
-                  },
-                );
-              },
+                      title: Text(
+                        breed.name,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(breed.subtitle),
+                      trailing: IconButton(
+                        icon: Icon(
+                          Provider.of<FavoritesProvider>(context).isFavorite(breed)
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color: Provider.of<FavoritesProvider>(context).isFavorite(breed)
+                              ? Colors.red
+                              : null,
+                        ),
+                        onPressed: () {
+                          Provider.of<FavoritesProvider>(context, listen: false).toggleFavorite(breed);
+                        },
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailScreen(dogBreed: breed),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
             ),
     );
   }

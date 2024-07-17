@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test/Models/dog_breed.dart';
 
 class FavoritesProvider extends ChangeNotifier {
-  List<DogBreed> _favorites = [];
+  final List<DogBreed> _favorites = [];
 
   List<DogBreed> get favorites => _favorites;
 

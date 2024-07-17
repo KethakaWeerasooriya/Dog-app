@@ -4,7 +4,7 @@ import '../Models/dog_breed.dart';
 class DetailScreen extends StatelessWidget {
   final DogBreed dogBreed;
 
-  DetailScreen({required this.dogBreed});
+  const DetailScreen({super.key, required this.dogBreed});
 
   @override
   Widget build(BuildContext context) {
@@ -18,17 +18,17 @@ class DetailScreen extends StatelessWidget {
           children: [
             Text(
               dogBreed.name,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(
               dogBreed.subtitle,
-              style: TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(
               'Icon: ${dogBreed.icon}',
-              style: TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             ),
           ],
         ),

@@ -5,6 +5,8 @@ import 'package:test/Models/dog_breed.dart';
 import 'detail_screen.dart';
 
 class FavoritesScreen extends StatelessWidget {
+  const FavoritesScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final favoritesProvider = Provider.of<FavoritesProvider>(context);
@@ -12,10 +14,10 @@ class FavoritesScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Favorite Breeds'),
+        title: const Text('Favorite Breeds'),
       ),
       body: favoriteBreeds.isEmpty
-          ? Center(child: Text('No favorite breeds yet!'))
+          ? const Center(child: Text('No favorite breeds yet!'))
           : ListView.builder(
               itemCount: favoriteBreeds.length,
               itemBuilder: (context, index) {
